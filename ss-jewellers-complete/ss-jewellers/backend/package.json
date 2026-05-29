@@ -1,0 +1,52 @@
+{
+  "name": "ss-jewellers-api",
+  "version": "1.0.0",
+  "description": "S.S. Jewellers – Premium Gold Jewellery Ecommerce API",
+  "main": "src/server.js",
+  "scripts": {
+    "start":       "node src/server.js",
+    "dev":         "nodemon src/server.js",
+    "seed":        "node src/utils/seed.js",
+    "test":        "jest --forceExit",
+    "test:watch":  "jest --watch",
+    "test:cover":  "jest --coverage --forceExit",
+    "lint":        "eslint src/ --ext .js",
+    "logs":        "mkdir -p logs"
+  },
+  "dependencies": {
+    "bcryptjs":              "^2.4.3",
+    "cloudinary":            "^1.41.0",
+    "compression":           "^1.7.4",
+    "cors":                  "^2.8.5",
+    "dotenv":                "^16.3.1",
+    "express":               "^4.18.2",
+    "express-mongo-sanitize":"^2.2.0",
+    "express-rate-limit":    "^7.1.5",
+    "helmet":                "^7.1.0",
+    "joi":                   "^17.11.0",
+    "jsonwebtoken":          "^9.0.2",
+    "mongoose":              "^8.0.3",
+    "morgan":                "^1.10.0",
+    "multer":                "^1.4.5-lts.1",
+    "nodemailer":            "^6.9.7",
+    "razorpay":              "^2.9.2",
+    "winston":               "^3.11.0"
+  },
+  "devDependencies": {
+    "eslint":          "^8.56.0",
+    "jest":            "^29.7.0",
+    "nodemon":         "^3.0.2",
+    "supertest":       "^6.3.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "jest": {
+    "testEnvironment":    "node",
+    "testMatch":          ["**/__tests__/**/*.test.js"],
+    "collectCoverageFrom":["src/**/*.js","!src/utils/seed.js","!src/__tests__/**"],
+    "testTimeout":        30000,
+    "forceExit":          true,
+    "verbose":            true
+  }
+}

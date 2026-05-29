@@ -1,0 +1,326 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ───────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Cinzel:wght@400;500;600;700;900&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+/* ── CSS Variables ──────────────────────────────────────── */
+:root {
+  --gold:          #C9A84C;
+  --gold-light:    #E8CC7A;
+  --gold-pale:     #F5E6B8;
+  --gold-dark:     #8B6914;
+  --obsidian:      #0A0A0A;
+  --charcoal:      #141414;
+  --carbon:        #1C1C1C;
+  --slate:         #2A2A2A;
+  --ash:           #3D3D3D;
+  --fog:           #888888;
+  --cream:         #FAF6EE;
+  --ivory:         #F5EFE0;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--obsidian);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--charcoal); }
+::-webkit-scrollbar-thumb  { background: var(--gold-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ── Selection ──────────────────────────────────────────── */
+::selection {
+  background: rgba(201, 168, 76, 0.25);
+  color: var(--cream);
+}
+
+/* ── Typography utilities ───────────────────────────────── */
+.font-display { font-family: 'Cinzel', serif; }
+.font-serif   { font-family: 'Cormorant Garamond', serif; }
+.font-sans    { font-family: 'Raleway', sans-serif; }
+
+/* ── Gold shimmer text ──────────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--gold-dark)  0%,
+    var(--gold-light) 40%,
+    var(--gold)       60%,
+    var(--gold-dark)  100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── Gold divider ───────────────────────────────────────── */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.gold-divider::before,
+.gold-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── Glass card ─────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  transition: all 0.4s ease;
+}
+.glass-card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(201, 168, 76, 0.2);
+}
+
+/* ── Button base ────────────────────────────────────────── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold));
+  background-size: 200% 200%;
+  color: var(--obsidian);
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold:hover {
+  background-position: 100% 100%;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.4);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 35px;
+  background: transparent;
+  color: var(--gold);
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  background: rgba(201, 168, 76, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(201, 168, 76, 0.2);
+}
+
+/* ── Animations ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(201, 168, 76, 0.5); }
+  50%       { box-shadow: 0 0 60px rgba(201, 168, 76, 0.8), 0 0 100px rgba(201, 168, 76, 0.3); }
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Scroll-triggered animate ───────────────────────────── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Delay utilities ────────────────────────────────────── */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* ── Form inputs ─────────────────────────────────────────── */
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+textarea,
+select {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: var(--cream);
+  font-family: 'Raleway', sans-serif;
+  transition: border-color 0.3s;
+  border-radius: 0;
+  outline: none;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--ash);
+}
+select option {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+/* ── Accent color for checkboxes/radio ──────────────────── */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--gold);
+}
+
+/* ── Line clamp ─────────────────────────────────────────── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Gold border gradient ───────────────────────────────── */
+.border-gold-gradient {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.border-gold-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+  z-index: -1;
+}
+
+/* ── Aspect ratios ──────────────────────────────────────── */
+.aspect-square      { aspect-ratio: 1 / 1; }
+.aspect-portrait    { aspect-ratio: 3 / 4; }
+.aspect-landscape   { aspect-ratio: 4 / 3; }
+.aspect-banner      { aspect-ratio: 16 / 5; }
+
+/* ── Responsive text ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-title { font-size: clamp(36px, 10vw, 60px); }
+}
+
+/* ── Swiper customisation ───────────────────────────────── */
+.swiper-pagination-bullet {
+  background: var(--fog) !important;
+  opacity: 1 !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 0 !important;
+}
+.swiper-pagination-bullet-active {
+  background: var(--gold) !important;
+  width: 24px !important;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--gold) !important;
+}
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px !important;
+}
+
+/* ── Admin table hover ───────────────────────────────────── */
+tbody tr:hover {
+  background: rgba(201, 168, 76, 0.03);
+}
+
+/* ── Razorpay badge ─────────────────────────────────────── */
+.rzp-powered {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  color: var(--fog);
+  margin-top: 12px;
+  justify-content: center;
+}
+
+/* ── Print ──────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+}

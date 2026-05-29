@@ -1,0 +1,28 @@
+{
+  "name": "ss-jewellers",
+  "version": "1.0.0",
+  "description": "S.S. Jewellers — Premium Gold Jewellery Ecommerce Platform",
+  "private": true,
+  "scripts": {
+    "dev":            "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend":    "cd backend && npm run dev",
+    "dev:frontend":   "cd frontend && npm run dev",
+    "build":          "cd frontend && npm run build",
+    "install:all":    "cd backend && npm install && cd ../frontend && npm install",
+    "seed":           "cd backend && node src/utils/seed.js",
+    "start:backend":  "cd backend && node src/server.js",
+    "start:frontend": "cd frontend && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "jewellery", "ecommerce", "nextjs", "express", "mongodb",
+    "razorpay", "gold", "luxury", "bridal", "india"
+  ],
+  "author": "S.S. Jewellers Dev Team",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,20 @@
+// ============================================================
+// utils/error.js  –  Operational error class
+// ============================================================
+
+/**
+ * Custom operational error.
+ * Pass a human-readable message and an HTTP status code.
+ * Non-operational (programming) errors should NOT use this class.
+ */
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode  = statusCode;
+    this.status      = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.isOperational = true;           // distinguishes from programming errors
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+module.exports = AppError;

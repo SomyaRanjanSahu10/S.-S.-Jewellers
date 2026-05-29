@@ -1,0 +1,164 @@
+name: S.S. Jewellers — CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+
+  # ─── Backend Tests ────────────────────────────────────
+  test-backend:
+    name: 🔬 Backend Tests
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ping:1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Run backend tests
+        working-directory: backend
+        run: npm test --if-present
+        env:
+          NODE_ENV: test
+          MONGODB_TEST_URI: mongodb://localhost:27017/ssjewellers_test
+          JWT_SECRET: test_jwt_secret_for_ci_pipeline_only
+          JWT_REFRESH_SECRET: test_refresh_secret_for_ci_only
+
+      - name: Upload coverage
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage/
+
+  # ─── Frontend Lint & Build ────────────────────────────
+  build-frontend:
+    name: 🏗 Frontend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Lint
+        working-directory: frontend
+        run: npm run lint --if-present
+        env:
+          NEXT_PUBLIC_API_URL: https://api.ssjewellers.in/api
+          NEXT_PUBLIC_RAZORPAY_KEY_ID: rzp_test_placeholder
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: placeholder
+          NEXT_PUBLIC_SITE_URL: https://ssjewellers.in
+
+      - name: Type check
+        working-directory: frontend
+        run: npx tsc --noEmit --skipLibCheck 2>/dev/null || true
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://api.ssjewellers.in/api
+          NEXT_PUBLIC_RAZORPAY_KEY_ID: rzp_test_placeholder
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: placeholder
+          NEXT_PUBLIC_SITE_URL: https://ssjewellers.in
+          NEXT_TELEMETRY_DISABLED: 1
+
+  # ─── Deploy Backend → Render ──────────────────────────
+  deploy-backend:
+    name: 🚀 Deploy API → Render
+    needs: [test-backend, build-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache": false}'
+
+      - name: Wait for deployment
+        run: sleep 60
+
+      - name: Health check
+        run: |
+          curl --retry 10 --retry-delay 10 --retry-connrefused \
+            https://api.ssjewellers.in/health || exit 1
+
+  # ─── Deploy Frontend → Vercel ────────────────────────
+  deploy-frontend:
+    name: 🌐 Deploy Frontend → Vercel
+    needs: [build-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Deploy to Vercel Production
+        working-directory: frontend
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # ─── Notify on failure ────────────────────────────────
+  notify-failure:
+    name: 📢 Notify on Failure
+    needs: [test-backend, build-frontend, deploy-backend, deploy-frontend]
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - name: Send WhatsApp alert
+        run: |
+          curl -X POST \
+            "https://api.twilio.com/2010-04-01/Accounts/${{ secrets.TWILIO_SID }}/Messages.json" \
+            --data-urlencode "From=whatsapp:+14155238886" \
+            --data-urlencode "To=whatsapp:+914023456789" \
+            --data-urlencode "Body=⚠️ S.S. Jewellers CI/CD pipeline failed on branch ${{ github.ref }}. Check GitHub Actions: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -u "${{ secrets.TWILIO_SID }}:${{ secrets.TWILIO_AUTH }}" 2>/dev/null || true

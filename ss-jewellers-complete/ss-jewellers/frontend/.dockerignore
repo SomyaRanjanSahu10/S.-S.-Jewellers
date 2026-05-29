@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log*
+.env
+.env.*
+!.env.example
+.next/
+out/
+.vercel/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+.git
+.gitignore
+README.md
+Dockerfile

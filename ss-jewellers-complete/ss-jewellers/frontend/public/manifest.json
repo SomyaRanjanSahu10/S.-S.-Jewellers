@@ -1,0 +1,116 @@
+{
+  "name":             "S.S. Jewellers — Pure Gold Jewellery",
+  "short_name":       "S.S. Jewellers",
+  "description":      "India's premium gold jewellery brand since 1987. Shop 22K & 24K BIS-certified gold rings, necklaces, bridal sets & more.",
+  "start_url":        "/",
+  "display":          "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color":      "#C9A84C",
+  "orientation":      "portrait-primary",
+  "lang":             "en-IN",
+  "scope":            "/",
+  "categories":       ["shopping", "lifestyle", "jewelry"],
+  "icons": [
+    {
+      "src":     "/icons/icon-72x72.png",
+      "sizes":   "72x72",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-96x96.png",
+      "sizes":   "96x96",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-128x128.png",
+      "sizes":   "128x128",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-144x144.png",
+      "sizes":   "144x144",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-152x152.png",
+      "sizes":   "152x152",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-192x192.png",
+      "sizes":   "192x192",
+      "type":    "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src":     "/icons/icon-384x384.png",
+      "sizes":   "384x384",
+      "type":    "image/png",
+      "purpose": "any"
+    },
+    {
+      "src":     "/icons/icon-512x512.png",
+      "sizes":   "512x512",
+      "type":    "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src":          "/screenshots/home.jpg",
+      "sizes":        "1170x2532",
+      "type":         "image/jpeg",
+      "platform":     "narrow",
+      "label":        "S.S. Jewellers Homepage"
+    },
+    {
+      "src":          "/screenshots/catalog.jpg",
+      "sizes":        "1170x2532",
+      "type":         "image/jpeg",
+      "platform":     "narrow",
+      "label":        "Product Catalog"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name":        "Shop Bridal",
+      "short_name":  "Bridal",
+      "description": "Browse bridal jewellery collections",
+      "url":         "/bridal",
+      "icons":       [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name":        "AI Stylist",
+      "short_name":  "AI Stylist",
+      "description": "Get AI jewellery recommendations",
+      "url":         "/ai-stylist",
+      "icons":       [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name":        "Track Order",
+      "short_name":  "Track",
+      "description": "Track your jewellery order",
+      "url":         "/track-order",
+      "icons":       [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name":        "Find a Store",
+      "short_name":  "Stores",
+      "description": "Locate nearest S.S. Jewellers showroom",
+      "url":         "/stores",
+      "icons":       [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url":      "https://ssjewellers.in"
+    }
+  ],
+  "prefer_related_applications": false
+}
