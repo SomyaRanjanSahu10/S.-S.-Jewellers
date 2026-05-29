@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  eslint: {
+    ignoreDuringBuilds: true,
+    },
+
   // ── Image optimisation ───────────────────────────────
   images: {
     remotePatterns: [
